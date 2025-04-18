@@ -53,16 +53,30 @@ jobs:
           name: build-artifact
           path: dist
 
+      - name: Check if dist is empty
+        id: check-dist
+        run: |
+          if [[ -z "$(ls -A dist)" ]]; then
+            echo "dist directory is empty"
+            echo "dist-empty=true" >> $GITHUB_OUTPUT
+          else
+            echo "dist directory is not empty"
+            echo "dist-empty=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Cleanup Dist Directory
+        if: steps.check-dist.outputs.dist-empty == 'false'
         run: rm -rf dist/*
 
       - name: Verify Build Artifact
+        if: steps.check-dist.outputs.dist-empty == 'false'
         run: |
           du -sh dist
           find dist -type l
 
       - name: Deploy to GitHub Pages
         id: deployment
+        if: steps.check-dist.outputs.dist-empty == 'false'
         uses: actions/deploy-pages@v4
         with:
           artifact_name: build-artifact
