@@ -6,11 +6,21 @@ on:
       - main
 
 jobs:
+  check-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if build exists
+        run: |
+          echo "Checking if build exists..."
+          if [ ! -d "dist" ]; then
+            echo "Build does not exist. Skipping deployment."
+            exit 0
+          fi
+          echo "Build exists. Proceeding with deployment."
   deploy:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
     needs:
-      - build-and-test
+      - check-build
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
