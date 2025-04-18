@@ -1,0 +1,38 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# Webpack build output
+dist/
+
+# Local certs (don’t commit your HTTPS certs!)
+certs/
+
+# macOS
+.DS_Store
+
+# dotenv files (if you start using .env)
+.env*
+
+# VS Code settings (optional)
+.vscode/
+
+# Docker
+*.local
+docker-compose.override.yml
+
+# ESLint cache
+.eslintcache
+
+# Logs
+logs/
+*.log
+
+# Coverage from testing
+coverage/
+
+# Build artifacts
+build/
