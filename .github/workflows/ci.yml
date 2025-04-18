@@ -28,9 +28,8 @@ jobs:
         run: npm run build
 
       - name: Upload Build Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: build-artifact
           path: dist
   deploy:
     needs: build-and-test
@@ -46,12 +45,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Download Build Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: build-artifact
-          path: dist
 
       - name: Check if dist is empty
         id: check-dist
@@ -78,5 +71,3 @@ jobs:
         id: deployment
         if: steps.check-dist.outputs.dist-empty == 'false'
         uses: actions/deploy-pages@v4
-        with:
-          artifact_name: build-artifact
