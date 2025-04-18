@@ -53,6 +53,14 @@ jobs:
           name: build-artifact
           path: dist
 
+      - name: Cleanup Dist Directory
+        run: rm -rf dist/*
+
+      - name: Verify Build Artifact
+        run: |
+          du -sh dist
+          find dist -type l
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
