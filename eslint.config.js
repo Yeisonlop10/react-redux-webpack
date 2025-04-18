@@ -1,20 +1,15 @@
 // eslint.config.js
 const js = require('@eslint/js');
 const react = require('eslint-plugin-react');
-const compat = require('eslint-compat-utils');
+const { FlatCompat } = require('eslint-compat-utils');
+
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+});
 
 module.exports = [
   js.configs.recommended,
-  compat.config({
-    extends: [
-      'plugin:react/recommended',
-    ],
-    settings: {
-      react: {
-        version: 'detect',
-      },
-    },
-  }),
+  ...compat.extends('plugin:react/recommended'),
   {
     languageOptions: {
       ecmaVersion: 'latest',
@@ -27,6 +22,11 @@ module.exports = [
       globals: {
         ...js.configs.recommended.globals,
         browser: true,
+      },
+      settings: {
+        react: {
+          version: 'detect',
+        },
       },
     },
     rules: {
