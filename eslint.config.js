@@ -19,9 +19,6 @@ module.exports = [
         browser: true,
       },
     },
-    plugins: {
-      react: react,
-    },
     rules: {
       'react/react-in-jsx-scope': 'off',
     },
