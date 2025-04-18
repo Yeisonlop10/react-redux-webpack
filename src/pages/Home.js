@@ -8,7 +8,7 @@ export default function Home() {
 
   return (
     <div>
-      <h1>Home Page</h1>
+      <h1>Home Page Project</h1>
       <p>Counter: {count}</p>
       <button onClick={() => dispatch(increment())}>Increment</button>
     </div>
