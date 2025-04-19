@@ -43,10 +43,13 @@ jobs:
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           
           # Create gh-pages branch if it doesn't exist
-          git show-ref --verify --quiet refs/heads/gh-pages || git checkout --orphan gh-pages
-          
-          # Checkout gh-pages branch
-          git checkout gh-pages
+          if ! git show-ref --verify --quiet refs/heads/gh-pages; then
+            git checkout --orphan gh-pages
+            git commit --allow-empty -m "Initial gh-pages commit"
+            git push origin gh-pages
+          else
+            git checkout gh-pages
+          fi
           
           # Clean up gh-pages branch
           git rm -rf .
