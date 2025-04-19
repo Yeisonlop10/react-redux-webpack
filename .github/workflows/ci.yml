@@ -71,3 +71,6 @@ jobs:
         id: deployment
         if: steps.check-dist.outputs.dist-empty == 'false'
         uses: actions/deploy-pages@v4
+        with:
+          publish_branch: gh-pages
+          publish_dir: dist
