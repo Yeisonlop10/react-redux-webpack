@@ -45,17 +45,19 @@ jobs:
           # Create gh-pages branch if it doesn't exist
           git show-ref --verify --quiet refs/heads/gh-pages || git checkout --orphan gh-pages
           
+          # Checkout gh-pages branch
+          git checkout gh-pages
+          
           # Clean up gh-pages branch
           git rm -rf .
           
-          # Checkout main branch
-          git checkout main
-          
           # Copy dist content to gh-pages branch
-          git checkout gh-pages
           cp -r dist/* .
           
           # Commit and push
           git add .
           git commit -m "Deploy to GitHub Pages"
           git push origin gh-pages -f
+          
+          # Checkout main branch
+          git checkout main
