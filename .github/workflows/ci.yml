@@ -24,9 +24,6 @@ jobs:
       - name: Lint Code
         run: npm run lint
 
-      - name: Copy index.html to dist
-        run: cp public/index.html dist/
-
       - name: Build
         run: npm run build
   deploy:
