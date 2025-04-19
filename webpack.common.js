@@ -6,7 +6,7 @@ module.exports = {
   output: {
     filename: 'bundle.[contenthash].js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/react-redux-webpack/', // Add this line
+    publicPath: '/react-redux-webpack/', 
   },
   resolve: {
     extensions: ['.js', '.jsx'],

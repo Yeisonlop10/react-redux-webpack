@@ -9,7 +9,7 @@ import './styles/App.scss';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
-    <BrowserRouter>
+    <BrowserRouter basename="/react-redux-webpack/">
       <App />
     </BrowserRouter>
   </Provider>
