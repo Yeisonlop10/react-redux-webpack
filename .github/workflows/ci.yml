@@ -24,6 +24,9 @@ jobs:
       - name: Lint Code
         run: npm run lint
 
+      - name: Copy index.html to dist
+        run: cp public/index.html dist/
+
       - name: Build
         run: npm run build
   deploy:
@@ -35,9 +38,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Copy index.html to dist
-        run: cp public/index.html dist/
 
       - name: Deploy to GitHub Pages
         run: |
