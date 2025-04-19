@@ -26,41 +26,26 @@ jobs:
 
       - name: Build
         run: npm run build
+        
+      - name: Upload Build Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
   deploy:
     needs: build-and-test
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pages: write
+      id-token: write
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Deploy to GitHub Pages
-        run: |
-          git config --global user.name "GitHub Actions Bot"
-          git config --global user.email "actions@github.com"
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-
-          # Create gh-pages branch if it doesn't exist or checkout if it exists
-          if ! git show-ref --verify --quiet refs/heads/gh-pages; then
-            git checkout --orphan gh-pages
-            git commit --allow-empty -m "Initial gh-pages commit"
-            git push origin gh-pages
-          else
-            git checkout gh-pages
-          fi
-          
-          # Clean up gh-pages branch
-          git rm -rf .
-          
-          # Copy dist content to gh-pages branch
-          cp -r ../dist/* .
-          
-          # Commit and push
-          git add .
-          git commit -m "Deploy to GitHub Pages"
-          git push origin gh-pages -f
-          
-          # Checkout main branch
-          git checkout main
+        id: deployment
+        uses: actions/deploy-pages@v4
