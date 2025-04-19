@@ -48,7 +48,11 @@ jobs:
           # Clean up gh-pages branch
           git rm -rf .
           
+          # Checkout main branch
+          git checkout main
+          
           # Copy dist content to gh-pages branch
+          git checkout gh-pages
           cp -r dist/* .
           
           # Commit and push
