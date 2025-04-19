@@ -66,6 +66,14 @@ jobs:
         run: |
           du -sh dist
           find dist -type l
+      
+      - name: Create gh-pages branch if it doesn't exist
+        if: steps.check-dist.outputs.dist-empty == 'false'
+        run: |
+          git checkout --orphan gh-pages
+          git rm -rf .
+          git commit --allow-empty -m "Create gh-pages branch"
+          git push origin gh-pages
 
       - name: Deploy to GitHub Pages
         id: deployment
@@ -74,4 +82,3 @@ jobs:
         with:
           publish_branch: gh-pages
           publish_dir: dist
-          force_orphan: true
