@@ -35,50 +35,20 @@ jobs:
     needs: build-and-test
     runs-on: ubuntu-latest
     permissions:
-      id-token: write
-      pages: write
-      contents: read
+      contents: write
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Check if dist is empty
-        id: check-dist
-        run: |
-          if [[ -z "$(ls -A dist)" ]]; then
-            echo "dist directory is empty"
-            echo "dist-empty=true" >> $GITHUB_OUTPUT
-          else
-            echo "dist directory is not empty"
-            echo "dist-empty=false" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Cleanup Dist Directory
-        if: steps.check-dist.outputs.dist-empty == 'false'
-        run: rm -rf dist/*
-
-      - name: Verify Build Artifact
-        if: steps.check-dist.outputs.dist-empty == 'false'
-        run: |
-          du -sh dist
-          find dist -type l
-      
-      - name: Create gh-pages branch if it doesn't exist
-        if: steps.check-dist.outputs.dist-empty == 'false'
-        run: |
-          git checkout --orphan gh-pages
-          git rm -rf .
-          git commit --allow-empty -m "Create gh-pages branch"
-          git push origin gh-pages
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: github-pages
+          path: dist
 
       - name: Deploy to GitHub Pages
-        id: deployment
-        if: steps.check-dist.outputs.dist-empty == 'false'
-        uses: actions/deploy-pages@v4
-        with:
-          publish_branch: gh-pages
-          publish_dir: dist
+        run: |
+          git config --global user.name 'GitHub Actions Bot'
+          git config --global user.email 'actions@github.com'
+          npx gh-pages -d dist -u "GitHub Actions Bot <actions@github.com>" -b gh-pages -r https://github.com/${{ github.repository }}
