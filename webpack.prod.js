@@ -15,7 +15,8 @@ module.exports = merge(common, {
     filename: '[name].[contenthash].js',
     assetModuleFilename: '[name].[contenthash][ext]',
     clean: true,
-    pathinfo: false, // Add this line
+    pathinfo: false,
+    publicPath: '/react-redux-webpack/', // Add this line
   },
   optimization: {
     moduleIds: 'deterministic',
